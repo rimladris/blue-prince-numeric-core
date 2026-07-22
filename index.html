@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
 <title>Blue Prince Numeric Core Calculator</title>
 <style>
   :root {
@@ -177,10 +178,45 @@
     margin-top: 32px;
     text-align: center;
   }
+  .gate {
+    width: 100%;
+    max-width: 460px;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-top: 3px solid var(--accent-bright);
+    border-radius: 14px;
+    padding: 28px 28px 24px;
+    text-align: center;
+  }
+  .gate h1 {
+    font-size: 1.2rem;
+    margin: 0 0 14px;
+  }
+  .gate p {
+    color: var(--text);
+    font-size: 0.92rem;
+    line-height: 1.5;
+    margin: 0 0 14px;
+  }
+  .gate .fine-print {
+    color: var(--muted);
+    font-size: 0.8rem;
+  }
+  .gate button {
+    margin-top: 6px;
+    width: 100%;
+  }
 </style>
 </head>
 <body>
-<main>
+<div class="gate" id="gate">
+  <h1>Spoiler Warning</h1>
+  <p>This is a small tool I made for myself and my friends. It solves a <strong>Blue Prince</strong> puzzle mechanic (the numeric core) and will spoil late-game content.</p>
+  <p class="fine-print">If you're still working through the game, you probably want to close this tab.</p>
+  <button id="gate-continue">I understand, show me the tool</button>
+</div>
+
+<main id="app" style="display: none;">
   <h1>Blue Prince Numeric Core Calculator</h1>
   <p class="subtitle">Enter a 4-character code, or 4 numbers separated by spaces or commas, to find the numeric core.</p>
 
@@ -201,6 +237,24 @@
 
 <script src="core.js"></script>
 <script>
+const GATE_KEY = 'bpnc-spoiler-ack';
+const gate = document.getElementById('gate');
+const app = document.getElementById('app');
+
+function showApp() {
+  gate.style.display = 'none';
+  app.style.display = '';
+}
+
+if (localStorage.getItem(GATE_KEY) === '1') {
+  showApp();
+} else {
+  document.getElementById('gate-continue').addEventListener('click', () => {
+    localStorage.setItem(GATE_KEY, '1');
+    showApp();
+  });
+}
+
 const codeInput = document.getElementById('code');
 const output = document.getElementById('output');
 const solveBtn = document.getElementById('solve');
