@@ -8,8 +8,10 @@
 // core is the minimum such result. If the result has 4 or more digits, the
 // process repeats using that result's digits as the new 4-value input.
 
-// Parses a 4-character code (each char a digit 0-9 or a letter A-Z) into
-// 4 values. This is the "PEAK" / "1942" style input.
+// Parses a 4-letter code (each char A-Z) into 4 values. This is the "PEAK"
+// style input. Digits are still accepted per-character for flexibility, but
+// valuesFromAnyInput blocks bare all-digit strings before they get here,
+// since e.g. "1942" is ambiguous (four digits, vs. one number).
 function valuesFromCode(input) {
   const chars = input.trim().toUpperCase().split('');
   if (chars.length !== 4) {
@@ -40,15 +42,21 @@ function valuesFromNumbers(nums) {
 
 // Parses a single free-form input box: if it contains a space or comma,
 // it's treated as 4 separated numbers (e.g. "16, 5, 1, 11" or "16 5 1 11").
-// Otherwise it's treated as a 4-character code (e.g. "PEAK" or "1942").
+// Otherwise it's treated as a 4-letter code (e.g. "PEAK"). A bare all-digit
+// string like "1942" is rejected rather than silently read as 4 digits,
+// since that reading is ambiguous with "the number 1942" — numbers always
+// need explicit separators.
 function valuesFromAnyInput(raw) {
   const trimmed = raw.trim();
   if (trimmed.length === 0) {
-    throw new Error('Enter a code (e.g. PEAK) or 4 numbers (e.g. 16, 5, 1, 11).');
+    throw new Error('Enter a 4-letter code (e.g. PEAK) or 4 numbers separated by spaces/commas (e.g. 16,5,1,11).');
   }
   if (/[\s,]/.test(trimmed)) {
     const tokens = trimmed.split(/[\s,]+/).filter((t) => t.length > 0);
     return valuesFromNumbers(tokens);
+  }
+  if (/^[0-9]+$/.test(trimmed)) {
+    throw new Error('For numbers, separate them with spaces or commas (e.g. 1,9,4,2) — plain digit strings like this aren\'t accepted.');
   }
   return valuesFromCode(trimmed);
 }
@@ -139,7 +147,7 @@ function computeNumericCoreForValues(values) {
   }
 }
 
-// Convenience wrapper for the "code" input mode (e.g. "PEAK", "1942").
+// Convenience wrapper for the "code" input mode (e.g. "PEAK").
 function computeNumericCore(input) {
   return computeNumericCoreForValues(valuesFromCode(input));
 }
