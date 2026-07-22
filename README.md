@@ -9,7 +9,7 @@ Static web app that computes the "numeric core" for a 4-value code, for the Blue
 - Input is 4 values, entered either way in the same box:
   - A 4-letter code — e.g. `PEAK` (`A=1 ... Z=26`).
   - 4 numbers separated by spaces or commas — e.g. `16,5,1,11` or `16 5 1 11`.
-  - The app auto-detects which format you typed based on whether it contains a space or comma. A bare digit string like `1942` isn't accepted, since it's ambiguous between "four digits" and "one number" — numbers always need explicit separators.
+  - The app auto-detects which format you typed based on whether it contains a space or comma.
 - Assign one operation to each value, applied strictly left to right with a running total starting at 0 (no normal order of operations).
 - The first operation is always `+`. The remaining three are every possible ordering of `{-, *, /}` (6 orderings total).
 - The numeric core is the **minimum non-negative integer** result across all valid orderings. Orderings that divide by zero, or that don't land on an integer, are excluded. If the only possible result is 0, that's still valid but flagged with a warning.
