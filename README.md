@@ -1,6 +1,6 @@
 # Blue Prince Numeric Core Calculator
 
-Live at **https://rimladris.github.io/blue-prince-numeric-core/**
+Live at **https://rimladris.github.io/blue-prince-numeric-core/** (auto-deploys from `main` via GitHub Pages).
 
 Static web app that computes the "numeric core" for a 4-value code, for the Blue Prince puzzle mechanic. First-time visitors see a spoiler warning before the tool is shown, since it reveals late-game content.
 
@@ -25,10 +25,6 @@ python3 -m http.server 8080
 ```
 
 Then visit `http://localhost:8080`.
-
-## Deploy to GitHub Pages
-
-Already set up for this repo (Settings → Pages → deploy from branch `main` / root). Pushing to `main` updates the live site automatically within a minute or two.
 
 No server or build process required — it's a single static HTML file plus a plain JS module (`core.js`).
 
