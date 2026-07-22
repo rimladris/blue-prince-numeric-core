@@ -13,7 +13,7 @@ Static web app that computes the "numeric core" for a 4-value code, for the Blue
 - Assign one operation to each value, applied strictly left to right with a running total starting at 0 (no normal order of operations).
 - The first operation is always `+`. The remaining three are every possible ordering of `{-, *, /}` (6 orderings total).
 - The numeric core is the **minimum non-negative integer** result across all valid orderings. Orderings that divide by zero, or that don't land on an integer, are excluded. If the only possible result is 0, that's still valid but flagged with a warning.
-- If a round's result has 4 or more digits, the process repeats using that result's digits as the new input.
+- If a pass's result has 4 or more digits, the process repeats using that result's digits as the new input.
 - If no ordering produces a non-negative integer, the tool reports "no solution" rather than guessing.
 
 ## Run locally

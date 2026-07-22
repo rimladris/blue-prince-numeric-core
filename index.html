@@ -299,9 +299,9 @@ function renderOutcomeOrError(computeFn) {
       stepsHtml += `<div class="step">${s.before} <span class="op">${OP_SYMBOLS[s.op]}</span> ${s.value} = ${s.after}</div>`;
     });
     div.innerHTML = `
-      <h3>Round ${r.round} &mdash; values [${r.inputValues.join(', ')}] &middot; operations [${opsDisplay}]</h3>
+      <h3>Pass ${r.round} &mdash; values [${r.inputValues.join(', ')}] &middot; operations [${opsDisplay}]</h3>
       <div class="steps">${stepsHtml}</div>
-      <div class="round-result">Round result: ${r.result}</div>
+      <div class="round-result">Pass result: ${r.result}</div>
       ${r.warning ? `<div class="round-warning">⚠ ${r.warning}</div>` : ''}
     `;
     output.appendChild(div);

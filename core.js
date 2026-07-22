@@ -125,7 +125,7 @@ function computeNumericCoreForValues(values) {
     if (!best) {
       return {
         rounds,
-        error: `No ordering of operations produces a non-negative integer for [${values.join(', ')}] (round ${roundNum}).`,
+        error: `No ordering of operations produces a non-negative integer for [${values.join(', ')}] (pass ${roundNum}).`,
       };
     }
     const warning = best.result === 0 ? 'Result is zero.' : null;
