@@ -1,0 +1,273 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Blue Prince Numeric Core Calculator</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #f2eee0;
+    --grid-line: rgba(71, 183, 249, 0.10);
+    --panel: #fffdf7;
+    --text: #1c2a33;
+    --muted: #6c7a80;
+    --accent: #1f6fa8;
+    --accent-strong: #123f5e;
+    --accent-bright: #47b7f9;
+    --accent-2: #b5811f;
+    --border: #cbd6dd;
+    --mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0d1f38;
+      --grid-line: rgba(71, 183, 249, 0.12);
+      --panel: #14294a;
+      --text: #e6eef7;
+      --muted: #8fa7c2;
+      --accent: #47b7f9;
+      --accent-strong: #8ad4fb;
+      --accent-bright: #47b7f9;
+      --accent-2: #e0ac52;
+      --border: #24406a;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background-color: var(--bg);
+    background-image:
+      repeating-linear-gradient(0deg, var(--grid-line) 0, var(--grid-line) 1px, transparent 1px, transparent 32px),
+      repeating-linear-gradient(90deg, var(--grid-line) 0, var(--grid-line) 1px, transparent 1px, transparent 32px);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    display: flex;
+    justify-content: center;
+    padding: 32px 16px 64px;
+  }
+  main {
+    width: 100%;
+    max-width: 640px;
+  }
+  h1 {
+    font-size: 1.4rem;
+    margin: 0 0 4px;
+    color: var(--accent-strong);
+    letter-spacing: 0.01em;
+  }
+  .subtitle {
+    color: var(--muted);
+    margin: 0 0 24px;
+    font-size: 0.92rem;
+  }
+  .input-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+  input#code {
+    flex: 1;
+    font-family: var(--mono);
+    font-size: 1.25rem;
+    letter-spacing: 0.04em;
+    padding: 12px 14px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: var(--panel);
+    color: var(--text);
+  }
+  input#code:focus {
+    outline: 2px solid var(--accent-bright);
+    outline-offset: 1px;
+  }
+  button {
+    font-size: 1rem;
+    padding: 12px 20px;
+    border-radius: 10px;
+    border: none;
+    background: var(--accent);
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.12s ease;
+  }
+  button:hover { background: var(--accent-strong); }
+  button:active { transform: translateY(1px); }
+  .hint {
+    color: var(--muted);
+    font-size: 0.82rem;
+    margin-bottom: 28px;
+  }
+  .error-box {
+    background: color-mix(in srgb, var(--accent-2) 15%, transparent);
+    border: 1px solid var(--accent-2);
+    color: var(--text);
+    padding: 12px 16px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    font-size: 0.9rem;
+  }
+  .core-result {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-top: 3px solid var(--accent-bright);
+    border-radius: 14px;
+    padding: 20px 24px;
+    text-align: center;
+    margin-bottom: 24px;
+  }
+  .core-result .label {
+    color: var(--muted);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .core-result .value {
+    font-family: var(--mono);
+    font-size: 2.6rem;
+    font-weight: 700;
+    color: var(--accent);
+  }
+  .core-result .warning {
+    color: var(--accent-2);
+    font-size: 0.85rem;
+    margin-top: 4px;
+  }
+  .round {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px 18px;
+    margin-bottom: 14px;
+  }
+  .round h3 {
+    margin: 0 0 10px;
+    font-size: 0.95rem;
+    color: var(--muted);
+    font-weight: 600;
+  }
+  .steps {
+    font-family: var(--mono);
+    font-size: 0.95rem;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .steps .step .op {
+    color: var(--accent-2);
+    font-weight: 700;
+    padding: 0 4px;
+  }
+  .round-result {
+    margin-top: 10px;
+    font-family: var(--mono);
+    font-size: 1rem;
+    color: var(--accent);
+    font-weight: 700;
+  }
+  .round-warning {
+    color: var(--accent-2);
+    font-size: 0.85rem;
+    margin-top: 4px;
+  }
+  footer {
+    color: var(--muted);
+    font-size: 0.78rem;
+    margin-top: 32px;
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+<main>
+  <h1>Blue Prince Numeric Core Calculator</h1>
+  <p class="subtitle">Enter a 4-character code, or 4 numbers separated by spaces or commas, to find the numeric core.</p>
+
+  <div class="input-row">
+    <input id="code" placeholder="e.g. PEAK  or  16,5,1,11" autocomplete="off" spellcheck="false">
+    <button id="solve" class="solve-btn">Solve</button>
+  </div>
+  <p class="hint">
+    Type a 4-character code (digits 0-9 as themselves, letters A=1 … Z=26) &mdash; e.g. <strong>PEAK</strong> or <strong>1942</strong>.<br>
+    Or type 4 numbers separated by <strong>spaces</strong> or <strong>commas</strong>, with or without spaces after the commas &mdash; e.g. <strong>16,5,1,11</strong>, <strong>16, 5, 1, 11</strong>, or <strong>16 5 1 11</strong> all work. Use this when a value is itself a multi-digit number.
+  </p>
+  <p class="hint">First operation is always <strong>+</strong>. Remaining operations (<strong>−</strong>, <strong>×</strong>, <strong>÷</strong>) are tried in every order, applied strictly left to right.</p>
+
+  <div id="output"></div>
+
+  <footer>Static, client-side only &middot; no data leaves your browser</footer>
+</main>
+
+<script src="core.js"></script>
+<script>
+const codeInput = document.getElementById('code');
+const output = document.getElementById('output');
+const solveBtn = document.getElementById('solve');
+
+const OP_SYMBOLS = { '+': '+', '-': '−', '*': '×', '/': '÷' };
+
+function renderOutcomeOrError(computeFn) {
+  output.innerHTML = '';
+  let outcome;
+  try {
+    outcome = computeFn();
+  } catch (e) {
+    const box = document.createElement('div');
+    box.className = 'error-box';
+    box.textContent = e.message;
+    output.appendChild(box);
+    return;
+  }
+
+  if (outcome.error) {
+    const box = document.createElement('div');
+    box.className = 'error-box';
+    box.textContent = outcome.error;
+    output.appendChild(box);
+  } else {
+    const core = document.createElement('div');
+    core.className = 'core-result';
+    const lastRound = outcome.rounds[outcome.rounds.length - 1];
+    core.innerHTML = `
+      <div class="label">Numeric Core</div>
+      <div class="value">${outcome.core}</div>
+      ${lastRound.warning ? `<div class="warning">⚠ ${lastRound.warning}</div>` : ''}
+    `;
+    output.appendChild(core);
+  }
+
+  outcome.rounds.forEach((r) => {
+    const div = document.createElement('div');
+    div.className = 'round';
+    const opsDisplay = r.ops.map((o) => OP_SYMBOLS[o]).join(' ');
+    let stepsHtml = '';
+    r.steps.forEach((s) => {
+      stepsHtml += `<div class="step">${s.before} <span class="op">${OP_SYMBOLS[s.op]}</span> ${s.value} = ${s.after}</div>`;
+    });
+    div.innerHTML = `
+      <h3>Round ${r.round} &mdash; values [${r.inputValues.join(', ')}] &middot; operations [${opsDisplay}]</h3>
+      <div class="steps">${stepsHtml}</div>
+      <div class="round-result">Round result: ${r.result}</div>
+      ${r.warning ? `<div class="round-warning">⚠ ${r.warning}</div>` : ''}
+    `;
+    output.appendChild(div);
+  });
+}
+
+function trySolve() {
+  const val = codeInput.value.trim();
+  if (val.length === 0) {
+    output.innerHTML = '';
+    return;
+  }
+  renderOutcomeOrError(() => computeNumericCoreFromAnyInput(val));
+}
+
+solveBtn.addEventListener('click', trySolve);
+codeInput.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') trySolve();
+});
+</script>
+</body>
+</html>
