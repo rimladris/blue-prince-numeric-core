@@ -99,6 +99,14 @@
     font-size: 0.82rem;
     margin-bottom: 28px;
   }
+  .hint code {
+    font-family: var(--mono);
+    font-size: 0.85em;
+    color: var(--accent-strong);
+    background: var(--grid-line);
+    padding: 1px 5px;
+    border-radius: 4px;
+  }
   .error-box {
     background: color-mix(in srgb, var(--accent-2) 15%, transparent);
     border: 1px solid var(--accent-2);
@@ -224,8 +232,9 @@
     <button id="solve" class="solve-btn">Solve</button>
   </div>
   <p class="hint">
-    Type a 4-character code (digits 0-9 as themselves, letters A=1 … Z=26) &mdash; e.g. <strong>PEAK</strong> or <strong>1942</strong>.<br>
-    Or type 4 numbers separated by <strong>spaces</strong> or <strong>commas</strong>, with or without spaces after the commas &mdash; e.g. <strong>16,5,1,11</strong>, <strong>16, 5, 1, 11</strong>, or <strong>16 5 1 11</strong> all work. Use this when a value is itself a multi-digit number.
+    <strong>Accepted inputs:</strong><br>
+    4 letters &mdash; <code>PEAK</code> (A=1, B=2, …)<br>
+    4 numbers &mdash; <code>1942</code> or <code>16,5,1,11</code> or <code>16 5 1 11</code>
   </p>
   <p class="hint">First operation is always <strong>+</strong>. Remaining operations (<strong>−</strong>, <strong>×</strong>, <strong>÷</strong>) are tried in every order, applied strictly left to right.</p>
 
