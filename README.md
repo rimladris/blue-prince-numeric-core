@@ -31,3 +31,7 @@ Then visit `http://localhost:8080`.
 Already set up for this repo (Settings → Pages → deploy from branch `main` / root). Pushing to `main` updates the live site automatically within a minute or two.
 
 No server or build process required — it's a single static HTML file plus a plain JS module (`core.js`).
+
+## License
+
+MIT — see [LICENSE](LICENSE).
